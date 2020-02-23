@@ -42,9 +42,9 @@ class Header extends Component{
                                 </span>
                                     <div className="dropdown-menu dropdown-menu-right bg-customcolor"
                                          aria-labelledby="navbarDropdownBlog">
-                                        <Link className="dropdown-item text-white"><i className="fa fa-user mr-1 timeText"/> Мој профил</Link>
+                                        <Link className="dropdown-item text-white"><i className="fa fa-user mr-1 timeText"/> My profile</Link>
                                         <span className="dropdown-item text-white"><i
-                                            className="fa fa-sign-out mr-1 timeText"/>Одјави се</span>
+                                            className="fa fa-sign-out mr-1 timeText"/>Log out</span>
                                     </div>
                                 </li>
                             </ul>

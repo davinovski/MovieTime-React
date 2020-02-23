@@ -6,7 +6,6 @@ import defaultMovie from "../../../images/default_movie_image.png";
 const CardItem = (props) => {
 
     const showStars = (total) =>{
-        console.log(total);
         var t=total/2.00;
         console.log(Math.floor(t));
         return (
@@ -19,7 +18,7 @@ const CardItem = (props) => {
 
 
     return (
-        <Link to="" style={{textDecoration: 'none', color: 'black', width: "33%"}}>
+        <Link to={`/movies/${props.movie.id}`} style={{textDecoration: 'none', color: 'black', width: "33%"}}>
             <div className="CardItem card mb-4 text-center bg-customcolor">
                 <div className="card-img-overlay p-2">
                     <div className="row">
