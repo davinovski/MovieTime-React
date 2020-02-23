@@ -1,0 +1,11 @@
+.Header .navbar{
+    background-color: #141414;
+}
+
+.Header .timeText{
+    color:#D12118;
+}
+
+.Header .dropdown-item:hover{
+    background-color: #141414 !important;
+}

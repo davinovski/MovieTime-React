@@ -1,0 +1,47 @@
+.CardItem .card-img-top {
+    width: 100%;
+    height: 15vw;
+}
+
+.CardItem {
+    transition: all 0.2s, ease-in-out;
+}
+
+.CardItem:hover {
+    -moz-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+    -o-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    transform: scale(1.03);
+
+    -webkit-transition: transform 0.5s ease-in-out;
+    -moz-transition:transform 0.5s ease;
+    transition : transform 0.5s ease;
+
+    box-shadow: 0 0 20px rgba(33,33,33,.3);
+}
+
+.CardItem .heart-link {
+    border: none;
+    background: transparent;
+}
+
+.CardItem .heart-link:focus {
+    outline: none;
+}
+
+.CardItem .heart-link:hover .fa-star-o:before {
+    content: "\f005";
+    color: #ffc107;
+}
+
+.CardItem .course-title {
+    height: 90px;
+    text-align:center;
+    display:table;
+    width:100%;
+}
+
+.CardItem .course-title h5 {
+    vertical-align: middle;
+}
