@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
-import MovieService from "../../../axios/axiosRepository";
+import MovieService from "../../../axios/MovieService";
 import MovieInfo from "./MovieInfo/MovieInfo"
 import "./MovieDetails.css"
 import MovieStaff from "./MovieCast/MovieCast";
+import CommentService from "../../../axios/CommentService";
 
 class MovieDetails extends Component {
     constructor(props){
@@ -12,7 +13,12 @@ class MovieDetails extends Component {
             movie: {
             },
             param: this.props.match.params,
-            posts:[]
+            comments:[],
+            comment:{
+                title:"",
+                content:"",
+                stars: 0.0
+            },
         }
     }
     componentDidMount() {
@@ -32,30 +38,71 @@ class MovieDetails extends Component {
         return (
             <span>
                 {Array(Math.floor(total)).fill(<i className="fa fa-star text-warning"/>)}
-                {(total) - Math.floor(total)==0 ? ('') : (<i className="fa fa-star-half-empty text-warning fa-xs"/>)}
+                {(total) - Math.floor(total)===0 ? ('') : (<i className="fa fa-star-half-empty text-warning fa-xs"/>)}
                 {Array(Math.floor(10-Math.ceil(total))).fill(<i className="fa fa-star-o text-warning"/>)}
             </span>
         )
     };
 
-    loadStars = () =>{
-        return(
-            <span>
-                {Array(10).fill(<i className="fa fa-star-o text-warning"/>)}
-            </span>
-        )
-    };
-
     getVideo = () =>{
-        console.log(this.state.videoUrl);
         if(this.state.videoUrl!==undefined) {
             return(
-            <iframe src={this.state.videoUrl} className="videoHere"
+            <iframe src={this.state.videoUrl} className="videoHere img-fluid"
                     frameBorder="0"
-                    width="400vh"
-                    height="200vh"
+                    width="600vh"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen/>
+                    allowFullScreen
+                    title={this.state.name}
+            />
+            )
+        }
+    };
+
+    postComment = (e) =>{
+        e.preventDefault();
+        document.getElementById("textareaComment").value="";
+        document.getElementById("inputTitle").value="";
+        document.getElementById("inputStars").value=0.0;
+        CommentService.postComment(this.state.movie.id,this.state.comment.title,this.state.comment.content, this.state.comment.stars).then(this.loadComments);
+
+    };
+
+    loadComments = () =>{
+        CommentService.getComments(this.state.movie.id).then(response=>{
+            this.setState({
+                comments: response.data
+            });
+        })
+    };
+
+    changeComment = (e) =>{
+            const inputName = e.target.name;
+            const inputValue = e.target.value;
+            const comment = {...this.state.comment};
+
+            comment[inputName] = inputValue;
+
+            this.setState({
+                comment: comment,
+            });
+        };
+
+    getComments = () =>{
+        if(this.state.movie.comments!==undefined){
+            return this.state.movie.comments.map(comment=>{
+                return(
+                    <div className="my-2 mx-2 shadow-sm bg-customcolor" key={comment.id}>
+                        <div>
+                            {this.showStars(comment.stars)}<b className="text-white"> {comment.title}</b>
+                        </div>
+                        <div>
+                            <small className="text-muted">{comment.createdAd.substring(0,10)} | by </small><Link to="#"><small className="d-inline text-muted">Name LastName</small></Link>
+                        </div>
+                        <div className="text-white">
+                            {comment.content}
+                        </div>
+                    </div>
+                )}
             )
         }
     };
@@ -82,9 +129,10 @@ class MovieDetails extends Component {
                                movieLength={this.state.movie.movieLength}
                                imageUrl={this.state.movie.imageUrl}
                                detailsUrl={this.state.movie.detailsUrl}
+                               languages={this.state.movie.languages}
                     />
 
-                    <div className="col-6">
+                    <div className="col-sm-12 col-md-6">
                         <div className="card bg-customcolor shadow-sm">
                         <div className="card my-3 bg-customcolor shadow-sm">
                             <div className="mx-3">
@@ -99,30 +147,27 @@ class MovieDetails extends Component {
                             </div>
                             <div className="mx-3">
                                 <h4 className="text-white"><b><i className="fa fa-user"/> User Reviews</b></h4>
-                                <div className="my-2 mx-2 shadow-sm bg-customcolor" key="1">
-                                    <div>
-                                        {this.showStars(10)}<b className="text-white"> Loved it!</b>
-                                    </div>
-                                    <div>
-                                        <small className="text-muted">11 November 2019 | by </small><Link to="#"><small className="d-inline text-muted">Hristijan Davinovski</small></Link>
-                                    </div>
-                                    <div className="text-white">
-                                        I really enjoyed watching this movie!
-                                    </div>
-                                </div>
                                 <div className="card bg-customcolor">
                                     <form>
                                         <div className="card mt-3 shadow-sm bg-customcolor">
                                             <div className="card-body p-2">
-                                                <input type="text" className="form-control mb-2" placeholder="Title"/>
-                                                {this.loadStars()}
-                                                <textarea className="form-control textValue mt-2" placeholder="Write a comment" rows="2" id="textareaComment"/>
-                                                <button type="submit" className="btn btn-outline-light float-right mt-2 mb-1">Comment</button>
+                                                <form onSubmit={(e)=>this.postComment(e)}>
+                                                    <input type="text" className="form-control mb-2" name="title"
+                                                           placeholder="Title" id="inputTitle" onChange={(e)=>this.changeComment(e)}/>
+                                                    <input type="number" max="10.0" min="1.0" placeholder="Rating (0.0-10.0)" name="stars" id="inputStars" className="w-25 form-control mb-2" step="0.1"
+                                                           onChange={(e)=>this.changeComment(e)}/>
+                                                    <textarea className="form-control textValue mt-2 textAreaComment"
+                                                              placeholder="Write a comment" rows="2" name="content"
+                                                              id="textareaComment" onChange={(e)=>this.changeComment(e)}/>
+                                                    <button type="submit"
+                                                            className="btn btn-outline-light float-right mt-2 mb-1">Comment
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-
+                                {this.getComments()}
                             </div>
                         </div>
                         </div>

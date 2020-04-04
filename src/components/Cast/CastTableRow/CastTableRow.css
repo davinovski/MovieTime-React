@@ -1,0 +1,73 @@
+.CastTableRow img {
+    height: 45px !important;
+    width: 45px !important;
+}
+
+.CastTableRow .content {
+    position: relative;
+    width: 100%;
+    max-width: 60px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.CastTableRow .content .content-overlay {
+    background: rgba(0,0,0,0.7);
+    border: white 2px solid;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.CastTableRow .content:hover .content-overlay{
+    opacity: 1;
+    cursor: pointer;
+}
+
+.CastTableRow .content-image{
+    width: 100%;
+}
+
+.CastTableRow .content-details {
+    position: absolute;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.CastTableRow .content:hover .content-details{
+    top: 57%;
+    left: 50%;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.CastTableRow .content-details p{
+    color: #fff;
+    font-size: 0.8em;
+}
+
+.btn-outline-custom-color{color:#D12118 !important;background-color:transparent;background-image:none;border-color:#D12118 !important}
+.btn-outline-custom-color:hover{color:white !important;background-color:#D12118;border-color:#D12118}
+.btn-outline-custom-color.focus,.btn-outline-custom-color:focus{box-shadow:0 0 0 .2rem rgba(12,117,150,.5)}
+.btn-outline-custom-color:not(:disabled):not(.disabled).active,.btn-outline-custom-color:not(:disabled):not(.disabled):active,.show>.btn-outline-custom-color.dropdown-toggle{color:#D12118;background-color:#D12118;border-color:#D12118}
+.btn-outline-custom-color:not(:disabled):not(.disabled).active:focus,.btn-outline-custom-color:not(:disabled):not(.disabled):active:focus,.show>.btn-outline-custom-color.dropdown-toggle:focus{box-shadow:0 0 0 .2rem rgba(108,117,125,.5)}
+

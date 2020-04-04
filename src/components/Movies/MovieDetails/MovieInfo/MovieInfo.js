@@ -4,8 +4,20 @@ import "./MovieInfo.css"
 
 const MovieInfo = (props) =>{
 
+    const getGenres = () =>{
+        if(props.genres!==undefined) {
+            return props.genres.join(", ");
+        }
+    };
+
+    const getLanguages = () =>{
+        if(props.languages!==undefined) {
+            return props.languages.join(", ");
+        }
+    };
+
     return(
-        <div className="col-3">
+        <div className="col-sm-12 col-md-3">
             <div className="card mb-3 shadow-sm bg-customcolor">
                 <img src={props.imageUrl===null ? sample : props.imageUrl} className="card-img-top" alt=""/>
                 <div className="ml-3 mt-2">
@@ -29,7 +41,7 @@ const MovieInfo = (props) =>{
                                 <div className="timeline-heading">
                                     <span className="text-white"><b>Genres</b></span>
                                     <br/>
-                                    <small className="text-white"></small>
+                                    <small className="text-white">{getGenres()}</small>
                                 </div>
 
                             </div>
@@ -63,9 +75,9 @@ const MovieInfo = (props) =>{
                             </div>
                             <div className="timeline-panel">
                                 <div className="timeline-heading">
-                                    <span className="text-white"><b>Language</b></span>
+                                    <span className="text-white"><b>Languages</b></span>
                                     <br/>
-                                    <small className="text-white">{props.rating}</small>
+                                    <small className="text-white">{getLanguages()}</small>
                                 </div>
 
                             </div>

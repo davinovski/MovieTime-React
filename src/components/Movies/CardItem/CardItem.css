@@ -4,7 +4,7 @@
 }
 
 .CardItem {
-    transition: all 0.2s, ease-in-out;
+    transition: all 0.5s, ease-in-out;
 }
 
 .CardItem:hover {
@@ -30,9 +30,9 @@
     outline: none;
 }
 
-.CardItem .heart-link:hover .fa-star-o:before {
-    content: "\f005";
-    color: #ffc107;
+.CardItem .heart-link:hover .fa-heart-o:before {
+    content: "\f004";
+    color: white;
 }
 
 .CardItem .course-title {
@@ -44,4 +44,24 @@
 
 .CardItem .course-title h5 {
     vertical-align: middle;
+}
+
+.CardItem .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: black;
+}
+.con:hover .overlay {
+    opacity: 0.8;
+}
+
+.CardItem .overlayText{
+    margin-top:30%;
 }

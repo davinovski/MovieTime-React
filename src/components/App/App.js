@@ -5,6 +5,9 @@ import {BrowserRouter, Redirect, Route, Switch, withRouter} from "react-router-d
 import Footer from "../Footer/Footer";
 import MainContainer from "../Movies/MainContainer/MainContainer";
 import MovieDetails from "../Movies/MovieDetails/MovieDetails";
+import MovieAdd from "../Movies/MovieAdd/MovieAdd";
+import MovieEdit from "../Movies/MovieEdit/MovieEdit";
+import Cast from "../Cast/Cast";
 
 function App() {
   return (
@@ -12,8 +15,13 @@ function App() {
               <Route path="/">
                   <Header/>
                   <Switch>
+                      <Route path="/movies/add" exact component={MovieAdd}/>
                       <Route path="/movies" exact component={MainContainer}/>
                       <Route path="/movies/:name" exact component={MovieDetails}/>
+                      <Route path="/movies/:movieId/edit" exact component={MovieEdit}/>
+                      <Route path="/people" exact component={Cast}/>
+                      <Redirect to="/movies"/>
+
                   </Switch>
                   <Footer/>
               </Route>

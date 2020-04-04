@@ -4,35 +4,31 @@ import {withRouter} from "react-router";
 import CastService from "../../../axios/CastService";
 import MovieService from "../../../axios/MovieService";
 
-class MovieAdd extends Component {
+class MovieEdit extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             allCast: null,
-            formData:{
-                title:"",
-                movieLength: 0,
-                imageUrl: "",
-                videoUrl: "",
-                yearOfRelease: "",
-                description:"",
-                detailsUrl:"",
-                languages:"",
-                country:"",
-                rating: 0.0
+            movie: {
+                writers: [],
+                stars: [],
+                directors: [],
+                genres: []
             },
+            initialMovie: {},
+            defaultCast: false,
             formDataValid: {
-                title:false,
-                movieLength: false,
-                imageUrl: false,
-                videoUrl: false,
-                yearOfRelease: false,
-                description:false,
-                detailsUrl:false,
-                languages:false,
-                country:false,
-                rating:false
+                title: true,
+                movieLength: true,
+                imageUrl: true,
+                videoUrl: true,
+                yearOfRelease: true,
+                description: true,
+                detailsUrl: true,
+                languages: true,
+                country: true,
+                rating: true
             }
         };
     }
@@ -43,35 +39,41 @@ class MovieAdd extends Component {
                 allCast: resp.data
             });
         });
+        this.getMovie();
     }
 
+    getMovie = () => {
+        MovieService.getMovie(this.props.match.params.movieId).then(response => {
+            console.log(response.data);
+            this.setState({
+                movie: response.data,
+                initialMovie: response.data,
+                defaultCast: true
+            });
+            console.log(this.state.movie);
+        });
+    };
+
     resetFormHandler = (e) => {
+        e.preventDefault();
+        document.getElementById("edit-form").reset();
+        const movie = {...this.state.initialMovie};
         this.setState({
-            formData: {
-                title:"",
-                movieLength: 0,
-                imageUrl: "",
-                videoUrl: "",
-                yearOfRelease: "",
-                description:"",
-                detailsUrl:"",
-                languages:"",
-                country:"",
-                rating: 0.0
-            },
+            movie: movie,
             formDataValid: {
-                title:false,
-                movieLength: false,
-                imageUrl: false,
-                videoUrl: false,
-                yearOfRelease: false,
-                description:false,
-                detailsUrl:false,
-                languages:false,
-                country:false,
-                rating:false
+                title: true,
+                movieLength: true,
+                imageUrl: true,
+                videoUrl: true,
+                yearOfRelease: true,
+                description: true,
+                detailsUrl: true,
+                languages: true,
+                country: true,
+                rating: true
             }
         });
+        this.validateForm();
     };
 
     onChangeHandler = e => {
@@ -79,24 +81,26 @@ class MovieAdd extends Component {
     };
 
     validateInput = e => {
+        const modifiedCourse = {...this.state.course};
         const inputName = e.target.name;
-        const inputValue = e.target.value;
-        const formData = {...this.state.formData};
-        const formDataValid = {...this.state.formDataValid};
-        const inputElement = document.getElementById(inputName);
-        if (inputValue.toString().trim().length > 0) {
-            formDataValid[inputName] = true;
-            inputElement.classList.remove("is-invalid");
-        } else {
-            formDataValid[inputName] = false;
-            inputElement.classList.add("is-invalid");
-        }
-        formData[inputName] = inputValue;
+        if (e.target.type !== "select-multiple")
+            modifiedCourse[inputName] = e.target.value;
+        else
+            modifiedCourse[inputName] = [...e.target.selectedOptions].map(o => o.value);
+        this.setState({course: modifiedCourse});
 
-        this.setState({
-            formData: formData,
-            formDataValid: formDataValid
-        });
+        if (Object.keys(this.state.formDataValid).includes(inputName)) {
+            const formDataValid = {...this.state.formDataValid};
+            const inputElement = document.getElementById(inputName);
+            if (e.target.value.toString().trim().length > 0) {
+                formDataValid[inputName] = true;
+                inputElement.classList.remove("is-invalid");
+            } else {
+                formDataValid[inputName] = false;
+                inputElement.classList.add("is-invalid");
+            }
+            this.setState({formDataValid: formDataValid});
+        }
     };
 
     onFormSubmitHandler = e => {
@@ -115,7 +119,9 @@ class MovieAdd extends Component {
         ;
 
         if (isFormValid) {
-            const movieData = {
+            const initialMovie = {...this.state.initialMovie};
+
+            const modifiedMovie = {
                 movieLength: e.target.movieLength.value,
                 imageUrl: e.target.imageUrl.value,
                 title: e.target.title.value,
@@ -124,14 +130,16 @@ class MovieAdd extends Component {
                 detailsUrl: e.target.detailsUrl.value,
                 description: e.target.description.value,
                 languages: e.target.languages.value.split(","),
-                country:e.target.country.value,
+                country: e.target.country.value,
                 writers: [...e.target.writers.options].filter(w => w.selected).map(w => w.value),
                 directors: [...e.target.directors.options].filter(d => d.selected).map(d => d.value),
                 stars: [...e.target.stars.options].filter(s => s.selected).map(s => s.value),
                 genres: [...e.target.genres.options].filter(g => g.selected).map(g => g.value),
                 rating: e.target.rating.value
             };
-            this.createMovie(movieData);
+            MovieService.editMovie(initialMovie.id, modifiedMovie).then(() => {
+                this.props.history.push("/movies");
+            });
         } else {
             this.validateForm();
         }
@@ -146,19 +154,12 @@ class MovieAdd extends Component {
         });
     };
 
-    createMovie = (formData) => {
-        MovieService.createMovie(formData).then(response => {
-            this.props.history.push("/movies");
-        });
-    };
-
-
     render() {
         return (
             <div className="movieAdd row w-100 my-4">
                 <div className="col-9 mx-auto my-4">
                     <div className="my-auto card cardAdd px-3 bg-customcolor">
-                        <form className="p-4" onSubmit={this.onFormSubmitHandler}>
+                        <form className="p-4" onSubmit={this.onFormSubmitHandler} id="edit-form">
                             <div className="row">
                                 <h1 className="textRed ml-3 my-0">Add movie</h1>
                             </div>
@@ -220,6 +221,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="text" className="form-control" id="title"
                                placeholder="Title of the movie" name="title"
+                               defaultValue={this.state.movie.title}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -238,6 +240,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="text" className="form-control" id="country"
                                placeholder="Country" name="country"
+                               defaultValue={this.state.movie.country}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -256,6 +259,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="text" className="form-control" id="rating"
                                placeholder="Rating" name="rating"
+                               defaultValue={this.state.movie.rating}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -273,8 +277,9 @@ class MovieAdd extends Component {
                     </div>
                     <div className="col-9">
                         <textarea className="form-control" id="description"
-                               placeholder="Description" name="description" rows="4"
-                               onChange={this.onChangeHandler}
+                                  placeholder="Description" name="description" rows="4"
+                                  defaultValue={this.state.movie.description}
+                                  onChange={this.onChangeHandler}
                         />
                     </div>
                 </div>
@@ -292,6 +297,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="text" className="form-control" id="detailsUrl"
                                placeholder="Url for details" name="detailsUrl"
+                               defaultValue={this.state.movie.detailsUrl}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -310,6 +316,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="number" className="form-control" id="yearOfRelease"
                                placeholder="Year of release" name="yearOfRelease"
+                               defaultValue={this.state.movie.yearOfRelease}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -328,6 +335,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="number" className="form-control" id="movieLength"
                                placeholder="Runtime" name="movieLength"
+                               defaultValue={this.state.movie.movieLength}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -345,6 +353,7 @@ class MovieAdd extends Component {
                 <div className="col-9">
                     <input type="text" className="form-control" id="imageUrl"
                            placeholder="Image Url" name="imageUrl"
+                           defaultValue={this.state.movie.imageUrl}
                            onChange={this.onChangeHandler}/>
                 </div>
             </div>
@@ -361,6 +370,7 @@ class MovieAdd extends Component {
                 <div className="col-9">
                     <input type="text" className="form-control" id="videoUrl"
                            placeholder="Video Url" name="videoUrl"
+                           defaultValue={this.state.movie.videoUrl}
                            onChange={this.onChangeHandler}/>
                 </div>
             </div>
@@ -369,91 +379,116 @@ class MovieAdd extends Component {
 
     getValueOptions = () => {
         if (this.state.allCast !== null) {
-            return this.state.allCast.map((staffMember, index) => <option key={staffMember.id}
-                                                                   value={staffMember.id}>{staffMember.name}</option>)
+            return this.state.allCast.map((castMember, index) => <option key={castMember.id}
+                                                                         value={castMember.id}>{castMember.name}</option>)
         }
     };
 
     getSelectWriters = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Writers</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="writers" name="writers" multiple >
-                            {this.getValueOptions()}
-                        </select>
+        let result = null;
+        if (this.state.defaultCast) {
+            result = (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Writers</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="writers" name="writers" multiple
+                                    defaultValue={this.state.movie.writers.map(w => w.id)}
+                                    onChange={this.onChangeHandler}>
+                                {this.getValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
-    };
+            );
+        }
+        return result;
+    }
 
     getSelectDirectors = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Directors</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="directors" name="directors" multiple>
-                            {this.getValueOptions()}
-                        </select>
+        let result = null;
+        if (this.state.defaultCast) {
+            result = (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Directors</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="directors" name="directors" multiple
+                                    defaultValue={this.state.movie.directors.map(d => d.id)}
+                                    onChange={this.onChangeHandler}>
+                                {this.getValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            );
+        }
+        return result;
     };
 
     getSelectStars = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Stars</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="stars" name="stars" multiple>
-                            {this.getValueOptions()}
-                        </select>
+        let result = null;
+        if (this.state.defaultCast) {
+            result = (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Stars</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="stars" name="stars" multiple
+                                    defaultValue={this.state.movie.stars.map(s => s.id)}
+                                    onChange={this.onChangeHandler}>
+                                {this.getValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            );
+        }
+        return result;
     };
 
     getSelectGenres = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Genres</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="genres" name="genres" multiple>
-                            <option value="Action">Action</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Animation">Animation</option>
-                            <option value="Biography">Biography</option>
-                            <option value="Comedy">Comedy</option>
-                            <option value="Crime">Crime</option>
-                            <option value="Documentary">Documentary</option>
-                            <option value="Drama">Drama</option>
-                            <option value="History">History</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Mystery">Mystery</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Sci-fi">Sci-fi</option>
-                            <option value="Thriller">Thriller</option>
-                        </select>
+        let result = null;
+        if (this.state.defaultCast) {
+            result = (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Genres</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="genres" name="genres" multiple
+                                    defaultValue={this.state.movie.genres}
+                                    onChange={this.onChangeHandler}>
+
+                                <option value="action">Action</option>
+                                <option value="adventure">Adventure</option>
+                                <option value="animation">Animation</option>
+                                <option value="biography">Biography</option>
+                                <option value="comedy">Comedy</option>
+                                <option value="crime">Crime</option>
+                                <option value="documentary">Documentary</option>
+                                <option value="drama">Drama</option>
+                                <option value="history">History</option>
+                                <option value="horror">Horror</option>
+                                <option value="mystery">Mystery</option>
+                                <option value="romance">Romance</option>
+                                <option value="sci-fi">Sci-fi</option>
+                                <option value="thriller">Thriller</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
-    };
+            );
+            return result;
+        }
+    }
 
     movieLanguages = () => {
         return (
@@ -465,6 +500,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="text" className="form-control" id="languages"
                                placeholder="e.g  English, French" name="languages"
+                               defaultValue={this.state.movie.languages}
                                onChange={this.onChangeHandler}
                         />
                     </div>
@@ -474,4 +510,4 @@ class MovieAdd extends Component {
     };
 }
 
-export default withRouter(MovieAdd);
+export default withRouter(MovieEdit);

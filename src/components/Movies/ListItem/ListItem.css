@@ -30,9 +30,9 @@
     outline: none;
 }
 
-.ListItem .heart-link:hover .fa-star-o:before {
-    content: "\f005";
-    color: #ffc107;
+.ListItem .heart-link:hover .fa-heart-o:before {
+    content: "\f004";
+    color: white;
 }
 
 

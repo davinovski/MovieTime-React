@@ -3,13 +3,13 @@ import "./FormSearch.css"
 
 const FormSearch = (props) => {
 
-    const changeToCardViewHandler = e => {
+    const changeToCardViewHandler = (e) => {
         document.getElementById("list-view").classList.remove("active");
         document.getElementById("card-view").classList.add("active");
         props.setCardView(true);
     };
 
-    const changeToListViewHandler = e => {
+    const changeToListViewHandler = (e) => {
         document.getElementById("list-view").classList.add("active");
         document.getElementById("card-view").classList.remove("active");
         props.setCardView(false);
@@ -19,7 +19,7 @@ const FormSearch = (props) => {
     return (
         <div className="row mb-4">
 
-            <div className="col-7 pl-0">
+            <div className="col-md-7 pl-0">
                 <form className="FormSearch w-100">
                     <div className="p-1 shadow-sm my-0">
                         <div className="input-group bg-dark">
@@ -30,20 +30,23 @@ const FormSearch = (props) => {
                                    id="search-input"/>
                             <div className="input-group-append">
                                 <button id="button-addon1" type="submit" className="btn btn-dark bg-customcolor"
-                                        title="Пребарај"><i className="fa fa-search textRed"/></button>
+                                        title="Search"><i className="fa fa-search textRed"/></button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
 
-            <div className="col-3">
-                <button id="fav-button"  className="btn btn-outline-light shadow-sm w-100 py-2">
-                    <span className="fa fa-star text-warning"/> Favourites
-                </button>
+            <div className="col-md-2">
+                    <select className="form-control bg-customcolor rounded-pill text-muted border-dark" onChange={props.setOrderBy}
+                    defaultValue={props.orderByAtt}>
+                        <option value="title">Title</option>
+                        <option value="rating">Rating</option>
+                        <option value="year">Year</option>
+                    </select>
             </div>
 
-            <div className="col-2 text-right">
+            <div className="col-md-2 text-right">
                 <div
                     className="btn-group d-inline-block rounded rounded-pill shadow-sm bg-customcolor d-flex justify-content-center"
                     role="group">
@@ -56,6 +59,12 @@ const FormSearch = (props) => {
                         <i className="fa fa-list textRed"/>
                     </button>
                 </div>
+            </div>
+
+            <div className="col-md-1">
+                <button id="fav-button"  className="btn btn-outline-light shadow-sm w-100 py-2">
+                    <span className="fa fa-heart textRed"/>
+                </button>
             </div>
         </div>
     );

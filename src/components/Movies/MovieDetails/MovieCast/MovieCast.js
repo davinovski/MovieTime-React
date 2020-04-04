@@ -6,7 +6,6 @@ const MovieStaff = (props) => {
     const getWriter = () => {
         if(props.writers!==undefined) {
             return props.writers.map(writer => {
-                console.log(writer);
                 return (
                     <div key={writer.id} className="mb-2">
                         <img className="rounded-pill shadow-sm" width="45px"
@@ -48,7 +47,7 @@ const MovieStaff = (props) => {
     };
 
     return(
-        <div className="col-3">
+        <div className="col-sm-12 col-md-3">
             <div id="accordion" className="mb-3">
                 <div className="card shadow-sm bg-customcolor">
                     <div className="card-header accordionCard" id="headingOne" data-toggle="collapse"
