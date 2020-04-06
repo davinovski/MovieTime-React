@@ -17,5 +17,9 @@ const MovieService = {
         return axios.patch(`/api/movies/${movieId}`, modifiedMovie);
     },
 
+    deleteMovie : (movieId) => {
+        return axios.delete(`/api/movies/${movieId}`);
+}
+
 };
 export default MovieService;

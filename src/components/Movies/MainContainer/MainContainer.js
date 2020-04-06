@@ -1,20 +1,22 @@
 import React, {Component} from "react"
-import Filters from "../Filters/Filters";
-import FormSearch from "../FormSearch/FormSearch";
-import CardItem from "../CardItem/CardItem";
+import Filters from "./Filters/Filters";
+import FormSearch from "./FormSearch/FormSearch";
+import CardItem from "./CardItem/CardItem";
 import MovieService from "../../../axios/MovieService";
-import ListItem from "../ListItem/ListItem";
+import ListItem from "./ListItem/ListItem";
+import ReactPaginate from "react-paginate";
 
 class MainContainer extends Component{
     constructor(props){
         super(props);
         this.state={
-            Results:[],
             CardView: true,
             QueryParams: new URLSearchParams(),
             pageNumber:1,
             pageSize:12,
-            orderByAttribute:"title"
+            orderByAttribute:"title",
+            totalElements:0,
+            totalPages:0
 
         }
     }
@@ -24,10 +26,7 @@ class MainContainer extends Component{
 
     loadMovies = () =>{
         MovieService.fetchMovies(this.state.pageNumber, this.state.pageSize, this.state.QueryParams).then(resp=>{
-            console.log(resp.data);
-            this.setState({
-                Results:resp.data
-            });
+            this.setState(resp.data);
         })
     };
 
@@ -38,20 +37,26 @@ class MainContainer extends Component{
     };
 
     showMovies = () =>{
-        if(this.state.Results.length!==0) {
+        if(this.state.totalElements!==0) {
             if (this.state.CardView) {
                 return (
                     <div className="card-deck w-100" style={{minHeight: "500px"}}>
-                        {this.state.Results.map(movie => <CardItem key={movie.id} movie={movie}/>)}
+                        {this.state.content.map(movie => <CardItem key={movie.id} movie={movie}/>)}
                     </div>
                 );
             } else {
                 return (
                     <div className="col-12" style={{minHeight: "500px"}}>
-                        {this.state.Results.map(movie => <ListItem key={movie.id} movie={movie}/>)}
+                        {this.state.content.map(movie => <ListItem key={movie.id} movie={movie}/>)}
                     </div>
                 );
             }
+            return (
+                <div className="text-center mx-auto mt-5" style={{minHeight: 400}}>
+                    <h1 className="text-muted" style={{fontSize: "80px"}}><i className="fa fa-frown-o"/></h1>
+                    <h5 className="text-muted"><i className="fa fa-sm"/>We're sorry! We couldn't find anything.</h5>
+                </div>
+            );
         }
         else{
             return (
@@ -76,11 +81,37 @@ class MainContainer extends Component{
 
     changeOrderAttribute = (e) =>{
         this.state.QueryParams.delete("orderBy");
-        const newAtrribute=e.target.value;
-        this.state.QueryParams.append("orderBy", newAtrribute);
+        const Attribute=e.target.value;
+        this.state.QueryParams.append("orderBy", Attribute);
         this.setState({
-            orderByAttribute:newAtrribute
+            orderByAttribute:Attribute
         },()=>this.loadMovies());
+    };
+
+    pagination = () => {
+        if (this.state.totalElements > 0) {
+            return (
+                <ReactPaginate previousLabel={<span className="fa fa-angle-double-left"/>}
+                               nextLabel={<span className="fa fa-angle-double-right"/>}
+                               breakLabel={<span className="gap">...</span>}
+                               breakClassName={"break-me"}
+                               pageCount={this.state.totalPages}
+                               marginPagesDisplayed={2}
+                               pageRangeDisplayed={5}
+                               pageClassName={"page-item"}
+                               pageLinkClassName={"page-link"}
+                               previousClassName={"page-item"}
+                               nextClassName={"page-item"}
+                               previousLinkClassName={"page-link"}
+                               nextLinkClassName={"page-link"}
+                               forcePage={this.state.PageNumber - 1}
+                               onPageChange={this.changePageHandler}
+                               containerClassName={"pagination justify-content-center"}
+                               activeClassName={"active"}
+                />
+            );
+        }
+        return null;
     };
 
     render() {
@@ -105,6 +136,7 @@ class MainContainer extends Component{
                             <div className="row">
                                 {this.showMovies()}
                             </div>
+                            {this.pagination()}
                         </div>
                     </div>
                 </div>

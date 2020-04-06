@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import CastService from "../../../axios/CastService";
 import MovieService from "../../../axios/MovieService";
+import GenresService from "../../../axios/GenresService";
 
 class MovieAdd extends Component {
 
@@ -10,6 +11,7 @@ class MovieAdd extends Component {
         super(props);
         this.state = {
             allCast: null,
+            allGenres: null,
             formData:{
                 title:"",
                 movieLength: 0,
@@ -43,6 +45,12 @@ class MovieAdd extends Component {
                 allCast: resp.data
             });
         });
+
+        GenresService.getGenres().then(resp=>{
+            this.setState({
+                allGenres:resp.data
+            })
+        })
     }
 
     resetFormHandler = (e) => {
@@ -310,8 +318,7 @@ class MovieAdd extends Component {
                     <div className="col-9">
                         <input type="number" className="form-control" id="yearOfRelease"
                                placeholder="Year of release" name="yearOfRelease"
-                               onChange={this.onChangeHandler}
-                        />
+                               onChange={this.onChangeHandler}/>
                     </div>
                 </div>
             </div>
@@ -371,6 +378,13 @@ class MovieAdd extends Component {
         if (this.state.allCast !== null) {
             return this.state.allCast.map((staffMember, index) => <option key={staffMember.id}
                                                                    value={staffMember.id}>{staffMember.name}</option>)
+        }
+    };
+
+    getGenresValueOptions = () =>{
+        if (this.state.allGenres !== null) {
+            return this.state.allGenres.map((genre, index) => <option key={genre.id}
+                                                                          value={genre.id}>{genre.name}</option>)
         }
     };
 
@@ -434,20 +448,7 @@ class MovieAdd extends Component {
                     </div>
                     <div className="col-9">
                         <select className="form-control" id="genres" name="genres" multiple>
-                            <option value="Action">Action</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Animation">Animation</option>
-                            <option value="Biography">Biography</option>
-                            <option value="Comedy">Comedy</option>
-                            <option value="Crime">Crime</option>
-                            <option value="Documentary">Documentary</option>
-                            <option value="Drama">Drama</option>
-                            <option value="History">History</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Mystery">Mystery</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Sci-fi">Sci-fi</option>
-                            <option value="Thriller">Thriller</option>
+                            {this.getGenresValueOptions()}
                         </select>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ class DeleteElement extends Component {
         if(whatToDelete === "cast" ){
             this.props.deleteCast(this.props.deletedId);
         } else {
-            this.props.deleteCourse(this.props.deletedId);
+            this.props.deleteMovie(this.props.deletedId);
         }
 
     };

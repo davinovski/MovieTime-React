@@ -6,7 +6,9 @@ const MovieInfo = (props) =>{
 
     const getGenres = () =>{
         if(props.genres!==undefined) {
-            return props.genres.join(", ");
+            return props.genres.map(genre=>{
+                return (<span>{genre.name} &nbsp;</span>)
+            })
         }
     };
 

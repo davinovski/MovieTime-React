@@ -8,6 +8,7 @@ import MovieDetails from "../Movies/MovieDetails/MovieDetails";
 import MovieAdd from "../Movies/MovieAdd/MovieAdd";
 import MovieEdit from "../Movies/MovieEdit/MovieEdit";
 import Cast from "../Cast/Cast";
+import Movies from "../Movies/Movies/Movies"
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
                       <Route path="/movies" exact component={MainContainer}/>
                       <Route path="/movies/:name" exact component={MovieDetails}/>
                       <Route path="/movies/:movieId/edit" exact component={MovieEdit}/>
-                      <Route path="/people" exact component={Cast}/>
+                      <Route path="/admin/movies" exact component={Movies}/>
+                      <Route path="/admin/people" exact component={Cast}/>
                       <Redirect to="/movies"/>
 
                   </Switch>

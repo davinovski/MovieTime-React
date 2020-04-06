@@ -12,11 +12,11 @@ class Cast extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            PageNumber: 1,
-            PageSize: 10,
-            TotalPages: 0,
-            TotalRecords: 0,
-            Results: [],
+            pageNumber: 1,
+            pageSize: 10,
+            totalPages: 0,
+            totalElements: 0,
+            content: [],
             QueryParams: new URLSearchParams(),
             addingCast: false,
             deleteCastId: null,
@@ -32,11 +32,8 @@ class Cast extends Component {
 
 
     loadCast = () => {
-        CastService.getAllStars().then(resp => {
-            console.log(resp.data);
-            this.setState({
-                Results: resp.data
-            });
+        CastService.getAllStarsPaged(this.state.pageNumber,this.state.pageSize,this.state.QueryParams).then(resp => {
+            this.setState(resp.data);
         });
     };
 
@@ -58,7 +55,7 @@ class Cast extends Component {
 
         this.setState({
             updateCast: false,
-            PageNumber: 1
+            pageNumber: 1
         }, () => this.loadCast());
 
     };
@@ -79,18 +76,18 @@ class Cast extends Component {
     deleteCastExecution = (castId) => {
 
         CastService.deleteCast(castId).then(resp => {
-            if (this.state.PageNumber === this.state.TotalPages) {
-                if (this.state.Results.length === 1) {
+            if (this.state.pageNumber === this.state.totalPages) {
+                if (this.state.content.length === 1) {
                     this.setState(prevState => {
-                        const newPageNumber = prevState.PageNumber - 1;
+                        const newpageNumber = prevState.pageNumber - 1;
                         return {
-                            PageNumber: Math.max(newPageNumber, 0)
+                            pageNumber: Math.max(newpageNumber, 0)
                         };
                     }, () => this.loadCast());
                 } else {
                     this.setState(prevState => {
-                        const newCastsRef = prevState.Results.filter(cast => cast.id !== castId);
-                        return {Results: newCastsRef};
+                        const newCastsRef = prevState.content.filter(cast => cast.id !== castId);
+                        return {content: newCastsRef};
                     });
                 }
             } else {
@@ -139,14 +136,14 @@ class Cast extends Component {
     updateNewData = (newData) => {
 
         this.setState((prevState) => {
-            const newCastsRef = prevState.Results.map((item) => {
+            const newCastsRef = prevState.content.map((item) => {
                 if (item.id === newData.id) {
                     return newData;
                 }
                 return item;
             });
 
-            return{"Results": newCastsRef}
+            return{"content": newCastsRef}
         })
 
     };
@@ -154,9 +151,9 @@ class Cast extends Component {
     scrollToTop = () => window.scrollTo(0, 0);
 
     handlePageChange = (event) => {
-        let newPageNumber = event.selected + 1;
+        let newpageNumber = event.selected + 1;
         this.setState({
-            PageNumber: newPageNumber
+            pageNumber: newpageNumber
         }, () => {
             this.loadCast();
             this.scrollToTop();
@@ -168,7 +165,7 @@ class Cast extends Component {
             return (
                 <div>
                     <div style={{minHeight: 300}}>
-                        <CastTable data={this.state.Results}
+                        <CastTable data={this.state.content}
                                     deleteCastHandle={this.deleteCast}
                                     updateCast={this.updateCast}
                                     removeValidation={this.removeValidation}/>
@@ -185,7 +182,7 @@ class Cast extends Component {
                            nextLabel={<span className="fa fa-angle-double-right"/>}
                            breakLabel={<span className="gap">...</span>}
                            breakClassName={"break-me"}
-                           pageCount={this.state.TotalPages}
+                           pageCount={this.state.totalPages}
                            marginPagesDisplayed={2}
                            pageRangeDisplayed={5}
                            pageClassName={"page-item"}
@@ -194,7 +191,7 @@ class Cast extends Component {
                            nextClassName={"page-item"}
                            previousLinkClassName={"page-link"}
                            nextLinkClassName={"page-link"}
-                           forcePage={this.state.PageNumber - 1}
+                           forcePage={this.state.pageNumber - 1}
                            onPageChange={this.handlePageChange}
                            containerClassName={"pagination justify-content-center"}
                            activeClassName={"active"}
@@ -219,7 +216,7 @@ class Cast extends Component {
                 <ModalDelete show={this.state.delCast}>
 
                     <DeleteElement modalClosed={this.deleteCastCancelHandler}
-                                   title={this.state.Results.map((item) => {
+                                   title={this.state.content.map((item) => {
                                        if (item.id === this.state.deleteCastId) {
                                            return item.name;
                                        }

@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import CastService from "../../../axios/CastService";
 import MovieService from "../../../axios/MovieService";
+import GenresService from "../../../axios/GenresService";
 
 class MovieEdit extends Component {
 
@@ -10,6 +11,7 @@ class MovieEdit extends Component {
         super(props);
         this.state = {
             allCast: null,
+            allGenres: null,
             movie: {
                 writers: [],
                 stars: [],
@@ -39,6 +41,12 @@ class MovieEdit extends Component {
                 allCast: resp.data
             });
         });
+
+        GenresService.getGenres().then(resp=>{
+            this.setState({
+                allGenres:resp.data
+            })
+        });
         this.getMovie();
     }
 
@@ -50,9 +58,9 @@ class MovieEdit extends Component {
                 initialMovie: response.data,
                 defaultCast: true
             });
-            console.log(this.state.movie);
         });
     };
+
 
     resetFormHandler = (e) => {
         e.preventDefault();
@@ -430,6 +438,12 @@ class MovieEdit extends Component {
         return result;
     };
 
+    getGenresValueOptions = () =>{
+        if (this.state.allGenres !== null) {
+            return this.state.allGenres.map((genre, index) => <option value={genre.id} key={genre.id}>{genre.name}</option>)
+        }
+    };
+
     getSelectStars = () => {
         let result = null;
         if (this.state.defaultCast) {
@@ -464,23 +478,9 @@ class MovieEdit extends Component {
                         </div>
                         <div className="col-9">
                             <select className="form-control" id="genres" name="genres" multiple
-                                    defaultValue={this.state.movie.genres}
+                                    defaultValue={this.state.movie.genres.map(g => g.id)}
                                     onChange={this.onChangeHandler}>
-
-                                <option value="action">Action</option>
-                                <option value="adventure">Adventure</option>
-                                <option value="animation">Animation</option>
-                                <option value="biography">Biography</option>
-                                <option value="comedy">Comedy</option>
-                                <option value="crime">Crime</option>
-                                <option value="documentary">Documentary</option>
-                                <option value="drama">Drama</option>
-                                <option value="history">History</option>
-                                <option value="horror">Horror</option>
-                                <option value="mystery">Mystery</option>
-                                <option value="romance">Romance</option>
-                                <option value="sci-fi">Sci-fi</option>
-                                <option value="thriller">Thriller</option>
+                                {this.getGenresValueOptions()}
                             </select>
                         </div>
                     </div>

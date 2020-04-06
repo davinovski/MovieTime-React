@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import './CardItem.css';
-import defaultMovie from "../../../images/default_movie_image.png";
+import defaultMovie from "../../../../images/default_movie_image.png";
 
 const CardItem = (props) => {
 
