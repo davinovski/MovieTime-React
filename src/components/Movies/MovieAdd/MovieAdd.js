@@ -12,6 +12,8 @@ class MovieAdd extends Component {
         this.state = {
             allCast: null,
             allGenres: null,
+            defaultCast: null,
+            defaultGenre: null,
             formData:{
                 title:"",
                 movieLength: 0,
@@ -42,14 +44,16 @@ class MovieAdd extends Component {
     componentDidMount() {
         CastService.getAllStars().then(resp => {
             this.setState({
-                allCast: resp.data
+                allCast: resp.data,
+                defaultCast: resp.data[0]
             });
         });
 
         GenresService.getGenres().then(resp=>{
             this.setState({
-                allGenres:resp.data
-            })
+                allGenres:resp.data,
+                defaultGenre: resp.data[0]
+            });
         })
     }
 
@@ -389,71 +393,83 @@ class MovieAdd extends Component {
     };
 
     getSelectWriters = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Writers</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="writers" name="writers" multiple >
-                            {this.getValueOptions()}
-                        </select>
+        if (this.state.defaultCast !== null) {
+            return (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Writers</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="writers" name="writers"
+                                    defaultValue={[this.state.defaultCast.id]} multiple>
+                                {this.getValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
     };
 
     getSelectDirectors = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Directors</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="directors" name="directors" multiple>
-                            {this.getValueOptions()}
-                        </select>
+        if (this.state.defaultCast !== null) {
+            return (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Directors</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="directors" name="directors"
+                                    defaultValue={[this.state.defaultCast.id]} multiple>
+                                {this.getValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
     };
 
     getSelectStars = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Stars</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="stars" name="stars" multiple>
-                            {this.getValueOptions()}
-                        </select>
+        if (this.state.defaultCast !== null) {
+            return (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Stars</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="stars" name="stars"
+                                    defaultValue={[this.state.defaultCast.id]} multiple>
+                                {this.getValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
     };
 
     getSelectGenres = () => {
-        return (
-            <div className="form-group">
-                <div className="row mb-3">
-                    <div className="col-3 text-right text-white">
-                        <label><b>Genres</b></label>
-                    </div>
-                    <div className="col-9">
-                        <select className="form-control" id="genres" name="genres" multiple>
-                            {this.getGenresValueOptions()}
-                        </select>
+        if (this.state.defaultGenre !== null) {
+            return (
+                <div className="form-group">
+                    <div className="row mb-3">
+                        <div className="col-3 text-right text-white">
+                            <label><b>Genres</b></label>
+                        </div>
+                        <div className="col-9">
+                            <select className="form-control" id="genres" name="genres"
+                                    defaultValue={[this.state.defaultGenre.id]} multiple>
+                                {this.getGenresValueOptions()}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
     };
 
     movieLanguages = () => {

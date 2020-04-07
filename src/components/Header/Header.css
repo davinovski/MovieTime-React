@@ -9,3 +9,7 @@
 .Header .dropdown-item:hover{
     background-color: #141414 !important;
 }
+
+.Header .spanButton{
+    cursor:pointer;
+}

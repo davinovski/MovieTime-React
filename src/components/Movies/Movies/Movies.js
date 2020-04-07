@@ -34,6 +34,7 @@ class AdminMovies extends Component {
 
     loadMovies = () => {
         MoviesService.fetchMovies(this.state.pageNumber, this.state.pageSize, this.state.QueryParams).then(resp => {
+            console.log(resp.data);
             this.setState(resp.data);
         });
     };
@@ -56,7 +57,7 @@ class AdminMovies extends Component {
             pageNumber: 1
         });
         this.loadMovies();
-    }
+    };
 
     deleteMovie = (MovieId) => {
 
@@ -181,7 +182,7 @@ class AdminMovies extends Component {
 
                 <div className="row">
                     <div className="col-3">
-                        <Link to='/movies/add' className="btn btn-outline-primary btn-lg">
+                        <Link to='/admin/movies/add' className="btn btn-outline-primary btn-lg">
                             <span className="fa fa-plus"/>&nbsp; Add Movie
                         </Link>
                     </div>

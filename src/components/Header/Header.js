@@ -6,9 +6,60 @@ import user from "../../images/user_image.png"
 
 
 class Header extends Component{
-    constructor(props){
+    constructor(props) {
         super(props);
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        this.state = {
+            id : userData.id,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            isUserAdmin: userData.admin
+        }
     }
+
+    getFullName = () => {
+        return `${this.state.firstName} ${this.state.lastName}`;
+    };
+
+    onLogoutHandler = () => {
+        this.props.logout();
+    };
+
+    renderAdminLinks = () => {
+        if (this.state.isUserAdmin) {
+            return (
+                <ul className="navbar-nav mr-auto ml-2">
+                    <li className="nav-item">
+                        <NavLink to="/admin/movies" className="nav-link text-white">
+                            <i className="fa fa-bookmark"/>&nbsp;
+                            Manage movies
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="/admin/people" className="nav-link text-white">
+                            <i className="fa fa-user-plus"/>&nbsp;
+                            Manage stars
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="/admin/users" className="nav-link text-white">
+                            <i className="fa fa-users"/>&nbsp;
+                            Manage users
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="/movies" className="nav-link text-white">
+                            <i className="fa fa-book"/>&nbsp;
+                            List movies
+                        </NavLink>
+                    </li>
+                </ul>
+            );
+        }
+        return null;
+    };
+
+
     render() {
         return (
             <header className="Header shadow-sm">
@@ -30,6 +81,7 @@ class Header extends Component{
                         </button>
 
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                            {this.renderAdminLinks()}
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item dropdown">
                                 <span className="nav-link dropdown-toggle text-white" id="navbarDropdownBlog"
@@ -38,13 +90,12 @@ class Header extends Component{
                                     <img src={user}
                                          width="40px" alt="User-profile" height="40px"
                                          className="rounded-circle mx-2 text-white"/>
-                                         Name LastName
+                                    <span className="spanButton">{this.getFullName()}</span>
                                 </span>
                                     <div className="dropdown-menu dropdown-menu-right bg-customcolor"
                                          aria-labelledby="navbarDropdownBlog">
-                                        <Link className="dropdown-item text-white"><i className="fa fa-user mr-1 timeText"/> My profile</Link>
-                                        <span className="dropdown-item text-white"><i
-                                            className="fa fa-sign-out mr-1 timeText"/>Log out</span>
+                                        <span className="dropdown-item text-white spanButton" onClick={this.onLogoutHandler}><i
+                                            className="fa fa-sign-out mr-1 timeText" />Log out</span>
                                     </div>
                                 </li>
                             </ul>
