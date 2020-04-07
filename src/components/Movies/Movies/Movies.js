@@ -54,8 +54,9 @@ class AdminMovies extends Component {
         this.state.QueryParams.set("searchTerm", term);
         this.setState({
             pageNumber: 1
-        }, () => this.loadMovies());
-    };
+        });
+        this.loadMovies();
+    }
 
     deleteMovie = (MovieId) => {
 

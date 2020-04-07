@@ -68,6 +68,16 @@ class MainContainer extends Component{
         }
     };
 
+    changePageHandler = (event) => {
+        let newPageNumber = event.selected + 1;
+        this.setState({
+            pageNumber: newPageNumber
+        }, () => {
+            this.loadMovies();
+            this.scrollToTop();
+        });
+    };
+
     changeFilterHandler = (propName, inputElementsList) =>{
         this.state.QueryParams.delete(propName);
         inputElementsList
@@ -114,6 +124,13 @@ class MainContainer extends Component{
         return null;
     };
 
+    searchMoviesHandler = (event) => {
+        event.preventDefault();
+        const searchTerm = event.target["term"].value;
+        this.state.QueryParams.set("searchTerm", searchTerm);
+        this.loadMovies();
+    };
+
     render() {
         return (
             <div className="MainContainer">
@@ -130,6 +147,7 @@ class MainContainer extends Component{
                             <FormSearch
                                 setCardView={this.setCardView}
                                 setOrderBy={this.changeOrderAttribute}
+                                onSearch={this.searchMoviesHandler}
                                 orderByAtt={this.state.orderByAttribute}
                             />
 

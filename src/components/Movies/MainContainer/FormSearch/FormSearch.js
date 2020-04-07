@@ -20,7 +20,7 @@ const FormSearch = (props) => {
         <div className="row mb-4">
 
             <div className="col-md-7 pl-0">
-                <form className="FormSearch w-100">
+                <form className="FormSearch w-100" onSubmit={props.onSearch}>
                     <div className="p-1 shadow-sm my-0">
                         <div className="input-group bg-dark">
                             <input type="search" placeholder="Search for a movie..."
