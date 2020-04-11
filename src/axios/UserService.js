@@ -27,10 +27,7 @@ const UsersService = {
     logoutUser: () => {
         localStorage.removeItem("Authorization");
         localStorage.removeItem("userData");
-    },
-
-
-
+    }
 };
 
 export default UsersService;

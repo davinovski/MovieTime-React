@@ -42,12 +42,6 @@ class Header extends Component{
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/admin/users" className="nav-link text-white">
-                            <i className="fa fa-users"/>&nbsp;
-                            Manage users
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
                         <NavLink to="/movies" className="nav-link text-white">
                             <i className="fa fa-book"/>&nbsp;
                             List movies

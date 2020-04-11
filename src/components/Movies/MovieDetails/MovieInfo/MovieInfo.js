@@ -18,6 +18,12 @@ const MovieInfo = (props) =>{
         }
     };
 
+    const getRating = () =>{
+        if(props.rating!==undefined){
+            return props.rating.toFixed(1);
+        }
+    };
+
     return(
         <div className="col-sm-12 col-md-3">
             <div className="card mb-3 shadow-sm bg-customcolor">
@@ -55,7 +61,7 @@ const MovieInfo = (props) =>{
                                 <div className="timeline-heading">
                                     <span className="text-white"><b>Rating</b></span>
                                     <br/>
-                                    <small className="text-white">{props.rating} <i className="fa fa-star text-warning"/></small>
+                                    <small className="text-white">{getRating()}&nbsp;<i className="fa fa-star text-warning"/></small>
                                 </div>
 
                             </div>

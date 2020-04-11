@@ -13,7 +13,6 @@ class MovieDetails extends Component {
             movie: {
             },
             param: this.props.match.params,
-            comments:[],
             comment:{
                 title:"",
                 content:"",
@@ -63,17 +62,9 @@ class MovieDetails extends Component {
         document.getElementById("textareaComment").value="";
         document.getElementById("inputTitle").value="";
         document.getElementById("inputStars").value=0.0;
-        CommentService.postComment(this.state.movie.id,this.state.comment.title,this.state.comment.content, this.state.comment.stars).then(this.loadComments);
-
+        CommentService.postComment(this.state.movie.id,this.state.comment.title,this.state.comment.content, this.state.comment.stars).then(()=>this.loadMovie());
     };
 
-    loadComments = () =>{
-        CommentService.getComments(this.state.movie.id).then(response=>{
-            this.setState({
-                comments: response.data
-            });
-        })
-    };
 
     changeComment = (e) =>{
             const inputName = e.target.name;
@@ -96,7 +87,7 @@ class MovieDetails extends Component {
                             {this.showStars(comment.stars)}<b className="text-white"> {comment.title}</b>
                         </div>
                         <div>
-                            <small className="text-muted">{comment.createdAd.substring(0,10)} | by </small><Link to="#"><small className="d-inline text-muted">Name LastName</small></Link>
+                            <small className="text-muted">{comment.createdAt.substring(0,10)} | by </small><Link to="#"><small className="d-inline text-muted">{comment.user.firstName} {comment.user.lastName}</small></Link>
                         </div>
                         <div className="text-white">
                             {comment.content}

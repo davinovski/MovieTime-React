@@ -46,6 +46,7 @@ class Login extends Component {
             username: e.target.username.value,
             password: e.target.password.value
         };
+        console.log(user);
         UsersService.loginUser(user).then(response => {
             this.setLocalStorage(user.username, response.headers.authorization);
         }).catch(error => {

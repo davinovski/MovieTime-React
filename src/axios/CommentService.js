@@ -3,11 +3,12 @@ import qs from "querystring";
 
 const CommentService = {
     postComment: (movieId,title,content, stars) => {
-        console.log(stars);
+        const userData = JSON.parse(localStorage.getItem("userData"));
         const data = {
             "title":title,
             "content":content,
-            "stars":stars
+            "stars":stars,
+            "email": userData.username
         };
         const formParams = qs.stringify(data);
         return axios.post(`/api/movies/${movieId}/comments/add`, formParams)

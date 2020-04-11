@@ -16,14 +16,20 @@ const ListItem = props => {
         )
     };
 
+    const addToFavouritesHandler = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        props.toggleStar(props.movie.id);
+    };
+
     return (
         <Link to={`/movies/${props.movie.id}`} style={{textDecoration: 'none', color: 'black'}}>
             <div className="ListItem card mb-3 bg-customcolor" style={{height:310}}>
                 <div className="row h-100 no-gutters bg-customcolor">
                     <div className="col-sm-5 col-md-3 h-100">
                         <div className="card-img-overlay p-2">
-                                    <button className="heart-link float-right" title="Add to favourites">
-                                        <span className="fa fa-2x fa-heart-o text-white"/>
+                                    <button onClick={addToFavouritesHandler} className="heart-link float-right" title="Add to favourites">
+                                        <span className={`fa fa-2x ${props.favourites.includes(props.movie.id) ? 'fa-heart' : 'fa-heart-o '} text-danger`}/>
                                     </button>
                         </div>
                         <img src={props.movie.imageUrl===null ? defaultMovie : props.movie.imageUrl}

@@ -14,7 +14,7 @@ const MovieTableRow = (props) => {
                 {props.data.country}
             </td>
             <td className="align-middle text-center">
-                {props.data.rating} <i className="fa fa-star text-warning"/>
+                {props.data.rating.toFixed(1)} <i className="fa fa-star text-warning"/>
             </td>
             <td className="align-middle text-center">
                 {props.data.yearOfRelease}

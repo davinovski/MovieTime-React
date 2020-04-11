@@ -15,6 +15,11 @@ const FormSearch = (props) => {
         props.setCardView(false);
     };
 
+    const toggleFavButton = (e) => {
+        const btn = document.getElementById("fav-button");
+        btn.classList.toggle("active");
+        props.toggleFavourites();
+    };
 
     return (
         <div className="row mb-4">
@@ -42,7 +47,7 @@ const FormSearch = (props) => {
                     defaultValue={props.orderByAtt}>
                         <option value="title">Title</option>
                         <option value="rating">Rating</option>
-                        <option value="year">Year</option>
+                        <option value="yearOfRelease">Year</option>
                     </select>
             </div>
 
@@ -62,7 +67,7 @@ const FormSearch = (props) => {
             </div>
 
             <div className="col-md-1">
-                <button id="fav-button"  className="btn btn-outline-light shadow-sm w-100 py-2">
+                <button id="fav-button" onClick={toggleFavButton} className="btn btn-outline-light shadow-sm w-100 py-2">
                     <span className="fa fa-heart textRed"/>
                 </button>
             </div>

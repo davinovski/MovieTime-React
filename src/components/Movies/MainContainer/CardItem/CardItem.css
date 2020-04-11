@@ -32,7 +32,7 @@
 
 .CardItem .heart-link:hover .fa-heart-o:before {
     content: "\f004";
-    color: white;
+    color: #d9534f;
 }
 
 .CardItem .course-title {

@@ -86,7 +86,7 @@ class SignUp extends Component {
 
 
     validateusername = username => {
-        const re = /^\S+@\S+$/;
+        const re = /^\S+@\S+.com$/;
         return re.test(username);
     };
 
