@@ -23,7 +23,7 @@ const MovieService = {
     },
 
     deleteMovie : (movieId) => {
-        return axios.delete(`/api/movies/${movieId}/delete`);
+        return axios.post(`/api/movies/${movieId}/delete`);
     },
     toggleFavourites : (movieId) => {
         const userData = JSON.parse(localStorage.getItem("userData"));
