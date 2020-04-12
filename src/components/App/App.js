@@ -15,6 +15,7 @@ import ScrollToTop from "../../util/ScrollToTop";
 import UsersService from "../../axios/UserService";
 import {isUserAuth} from "../../util/CheckAuthFunctions";
 import {getUserRole} from "../../util/CheckAuthFunctions";
+import MoviesBarChart from "../Movies/Charts/MoviesBarChart";
 
 class App extends Component {
 
@@ -94,6 +95,7 @@ class App extends Component {
                             <Route path="/movies/:name" exact component={MovieDetails}/>
                             <Route path="/movies/:movieId/edit" exact component={MovieEdit}/>
                             <Route path="/admin/people" exact component={Cast}/>
+                            <Route path="/admin/stats" exact component={MoviesBarChart}/>
                             <Redirect to="/movies"/>
                         </Switch>
                         <Footer/>

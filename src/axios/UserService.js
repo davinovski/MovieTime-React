@@ -3,7 +3,6 @@ import axios from "./axios"
 const UsersService = {
 
     registerUser: (user) => {
-        console.log(user);
         return axios.post("/api/users/register", user);
     },
 

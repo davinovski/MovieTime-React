@@ -47,6 +47,12 @@ class Header extends Component{
                             List movies
                         </NavLink>
                     </li>
+                    <li className="nav-item">
+                        <NavLink to="/admin/stats" className="nav-link text-white">
+                            <i className="fa fa-bar-chart"/>&nbsp;
+                            Movies Stats
+                        </NavLink>
+                    </li>
                 </ul>
             );
         }

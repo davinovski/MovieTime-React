@@ -266,7 +266,7 @@ class MovieAdd extends Component {
                         <label><b>Rating</b></label>
                     </div>
                     <div className="col-9">
-                        <input type="text" className="form-control" id="rating"
+                        <input type="number" className="form-control" id="rating"
                                placeholder="Rating" name="rating"
                                onChange={this.onChangeHandler}
                         />

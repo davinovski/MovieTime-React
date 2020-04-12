@@ -169,7 +169,7 @@ class MovieEdit extends Component {
                     <div className="my-auto card cardAdd px-3 bg-customcolor">
                         <form className="p-4" onSubmit={this.onFormSubmitHandler} id="edit-form">
                             <div className="row">
-                                <h1 className="textRed ml-3 my-0">Add movie</h1>
+                                <h1 className="textRed ml-3 my-0">Edit movie</h1>
                             </div>
                             <hr className="mb-4"/>
                             <div className="row">
@@ -265,7 +265,7 @@ class MovieEdit extends Component {
                         <label><b>Rating</b></label>
                     </div>
                     <div className="col-9">
-                        <input type="text" className="form-control" id="rating"
+                        <input type="number" className="form-control" id="rating"
                                placeholder="Rating" name="rating"
                                defaultValue={this.state.movie.rating}
                                onChange={this.onChangeHandler}
@@ -413,7 +413,7 @@ class MovieEdit extends Component {
             );
         }
         return result;
-    }
+    };
 
     getSelectDirectors = () => {
         let result = null;

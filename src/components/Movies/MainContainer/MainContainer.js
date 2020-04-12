@@ -23,7 +23,6 @@ class MainContainer extends Component{
     }
     componentDidMount() {
         const userData = JSON.parse(localStorage.getItem("userData"));
-        console.log(userData);
         this.setState({
             favouriteIds: userData.favoritesIds
         }, () => this.loadMovies());

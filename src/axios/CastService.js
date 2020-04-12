@@ -14,13 +14,13 @@ const CastService = {
     },
 
     editPerson: (personId, modifiedPerson) => {
-        return axios.put(`/api/cast/${personId}`, modifiedPerson);
+        return axios.patch(`/api/cast/edit/${personId}`, modifiedPerson);
     },
     getPerson : (personId) => {
         return axios.get(`/api/cast/${personId}`);
     },
     deleteCast : (personId) => {
-        return axios.delete(`/api/cast/delete/${personId}`);
+        return axios.post(`/api/cast/delete/${personId}`);
     }
 
 

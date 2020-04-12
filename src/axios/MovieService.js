@@ -17,12 +17,13 @@ const MovieService = {
     createMovie : (formData) => {
         return axios.post(`/api/movies`, formData)
     },
+
     editMovie: (movieId, modifiedMovie) => {
-        return axios.patch(`/api/movies/${movieId}`, modifiedMovie);
+        return axios.patch(`/api/movies/${movieId}/edit`, modifiedMovie);
     },
 
     deleteMovie : (movieId) => {
-        return axios.delete(`/api/movies/${movieId}`);
+        return axios.delete(`/api/movies/${movieId}/delete`);
     },
     toggleFavourites : (movieId) => {
         const userData = JSON.parse(localStorage.getItem("userData"));

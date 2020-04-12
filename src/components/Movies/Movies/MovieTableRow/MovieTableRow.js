@@ -6,7 +6,7 @@ const MovieTableRow = (props) => {
     return (
         <tr className="MovieTableRow">
             <td className="align-middle text-center">
-                <Link to={`/Movie/${props.data.id}`} className="text-white">
+                <Link to={`/movies/${props.data.id}`} className="text-white">
                     {props.data.title}
                 </Link>
             </td>
