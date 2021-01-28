@@ -1,20 +1,10 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import './ListItem.css';
+import './ListItem.scss';
 import defaultMovie from "../../../../images/default_movie_image.png";
 
+const CardItem = (props) => {
 
-const ListItem = props => {
-
-    const showStars = (total) =>{
-        var t=total/2.00;
-        return (
-            <span>
-                {Array(Math.floor(t)).fill(<i className="fa fa-star text-warning"/>)}
-                {(t) - Math.floor(t)===0 ? ('') : (<i className="fa fa-star-half-empty text-warning"/>)}
-            </span>
-        )
-    };
 
     const addToFavouritesHandler = event => {
         event.preventDefault();
@@ -22,37 +12,36 @@ const ListItem = props => {
         props.toggleStar(props.movie.id);
     };
 
+
     return (
         <Link to={`/movies/${props.movie.id}`} style={{textDecoration: 'none', color: 'black'}}>
-            <div className="ListItem card mb-3 bg-customcolor" style={{height:310}}>
-                <div className="row h-100 no-gutters bg-customcolor">
-                    <div className="col-sm-5 col-md-3 h-100">
-                        <div className="card-img-overlay p-2">
-                                    <button onClick={addToFavouritesHandler} className="heart-link float-right" title="Add to favourites">
-                                        <span className={`fa fa-2x ${props.favourites.includes(props.movie.id) ? 'fa-heart' : 'fa-heart-o '} text-danger`}/>
-                                    </button>
-                        </div>
-                        <img src={props.movie.imageUrl===null ? defaultMovie : props.movie.imageUrl}
-                             className="card-img h-100" style={{height : "160px"}} alt={props.movie.title}/>
+            <div className="movie_card_list" id="bright_list" style={{'marginTop': '0px', 'marginBottom': '18px', 'marginLeft' : '0px', 'marginRight' : '0px'}}>
+                <div className="info_section_list">
+                    <div className="movie_header_list">
+                        <img className="locandina_list"
+                             src={props.movie.imageUrl===null ? defaultMovie : props.movie.imageUrl}/>
+                        <h1>{props.movie.title}</h1>
+                        <h4>{props.movie.yearOfRelease}</h4>
+                        <span className="minutes_list">{props.movie.movieLength} min</span>
+                        <p className="type text-muted">{props.movie.rating} <i className="fa fa-star text-warning"/></p>
                     </div>
-                    <div className="col-sm-7 col-md-9 h-100" style={{height : "160px"}}>
-                        <div className="card-body h-100">
-                            <h5 className="card-title my-0 textRed">{props.movie.title}</h5>
-                            <p className="card-text text-muted mt-0 mb-1"><span
-                                style={{textTransform: "capitalize"}}>{props.movie.yearOfRelease}</span></p>
-                            <div className="text-justify">
-                                <small className="card-text text-white">{props.movie.description}</small>
-                            </div>
-                            <p className="card-text text-muted">{showStars(props.movie.rating)}</p>
-                        </div>
+                    <div className="movie_desc_list">
+                        <p className="text">
+                            {props.movie.description.length > 350 ? props.movie.description.substring(0,350) + "..." : props.movie.description}
+                        </p>
+                    </div>
+                    <div className="movie_social">
+                        <ul>
+                            <li><button onClick={addToFavouritesHandler} className="float-right" title="Add to favourites" style={{background : 'transparent', border: 'none'}}>
+                                <span className={`fa fa-2x ${props.favourites.includes(props.movie.id) ? 'text-danger' : 'text-muted '} fa-heart`}/>
+                            </button></li>
+                        </ul>
                     </div>
                 </div>
+                <div className="blur_back_list bright_back_list" style={{backgroundImage: `url("${props.movie.imageUrl}")`}}/>
             </div>
-
-
-
         </Link>
     );
 };
 
-export default ListItem;
+export default CardItem;

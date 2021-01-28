@@ -1,0 +1,3 @@
+.rowToFade{
+    -webkit-filter: blur(5px) grayscale(90%) !important;
+}

@@ -1,0 +1,73 @@
+.userPrivacy .imgUser{
+    border-radius: 3px;
+}
+
+.userPrivacy .content {
+    position: relative;
+    width: 90%;
+    max-width: 200px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.userPrivacy .content .content-overlay {
+    background: rgba(0,0,0,0.7);
+    border: white 2px solid;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.userPrivacy .content:hover .content-overlay{
+    opacity: 1;
+    cursor: pointer;
+}
+
+.userPrivacy .content-image{
+    width: 100%;
+}
+
+.userPrivacy .content:hover .content-details{
+    top: 57%;
+    left: 50%;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.userPrivacy .content-details p{
+    color: #fff;
+    font-size: 0.8em;
+}
+
+.userPrivacy .content-details {
+    position: absolute;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.userPrivacy .content-details{
+    border-radius:3px;
+}
+
+body.modal-open .fadedSpot{
+    -webkit-filter: blur(5px) grayscale(90%);
+}

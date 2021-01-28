@@ -30,7 +30,7 @@ class Filters extends Component {
     getAllGenres = () =>{
       return this.state.allGenres.map(genre=>{
           return(
-              <div className="row">
+              <div className="row" key={genre.id}>
                   <div className="col">
                       <div className="cs-control cs-checkbox pl-4">
                           <input type="checkbox" onChange={this.changeCheckboxHandler} className="cs-control-input"

@@ -16,6 +16,10 @@ import UsersService from "../../axios/UserService";
 import {isUserAuth} from "../../util/CheckAuthFunctions";
 import {getUserRole} from "../../util/CheckAuthFunctions";
 import MoviesBarChart from "../Movies/Charts/MoviesBarChart";
+import UserDetails from "../User/UserDetails";
+import Statistics from "../Movies/Statistics/Statistics";
+import 'react-multi-carousel/lib/styles.css';
+import CastDetails from "../Cast/CastDetails/CastDetails";
 
 class App extends Component {
 
@@ -52,6 +56,7 @@ class App extends Component {
             userRole: null
         });
         this.props.history.push("/login");
+        localStorage.removeItem("userData");
     };
 
     render() {
@@ -77,6 +82,9 @@ class App extends Component {
                             <Switch>
                                 <Route path="/movies" exact component={MainContainer}/>
                                 <Route path="/movies/:name" exact component={MovieDetails}/>
+                                <Route path="/users/:name" render={(props) => <UserDetails {...props} deactivateUserFromPrivacy={this.logoutUserHandler}/>}/>
+                                <Route path="/statistics" exact component={Statistics}/>
+                                <Route path="/person/:name" exact component={CastDetails}/>
                                 <Redirect to="/movies"/>
                             </Switch>
                             <Footer/>
@@ -90,12 +98,15 @@ class App extends Component {
                         <Header logout={this.logoutUserHandler}/>
                         <Switch>
                             <Route path="/movies" exact component={MainContainer}/>
+                            <Route path="/statistics" exact component={Statistics}/>
+                            <Route path="/users/:name" render={(props) => <UserDetails {...props} deactivateUserFromPrivacy={this.logoutUserHandler}/>}/>
                             <Route path="/admin/movies/add" exact component={MovieAdd}/>
                             <Route path="/admin/movies" exact component={Movies}/>
                             <Route path="/movies/:name" exact component={MovieDetails}/>
                             <Route path="/movies/:movieId/edit" exact component={MovieEdit}/>
                             <Route path="/admin/people" exact component={Cast}/>
                             <Route path="/admin/stats" exact component={MoviesBarChart}/>
+                            <Route path="/person/:name" exact component={CastDetails}/>
                             <Redirect to="/movies"/>
                         </Switch>
                         <Footer/>

@@ -42,7 +42,7 @@ const FormSearch = (props) => {
                 </form>
             </div>
 
-            <div className="col-md-2">
+            <div className="col-md-2 pt-1">
                     <select className="form-control bg-customcolor rounded-pill text-muted border-dark" onChange={props.setOrderBy}
                     defaultValue={props.orderByAtt}>
                         <option value="title">Title</option>
@@ -51,7 +51,7 @@ const FormSearch = (props) => {
                     </select>
             </div>
 
-            <div className="col-md-2 text-right">
+            <div className="col-md-2 text-right pt-1">
                 <div
                     className="btn-group d-inline-block rounded rounded-pill shadow-sm bg-customcolor d-flex justify-content-center"
                     role="group">
@@ -66,7 +66,7 @@ const FormSearch = (props) => {
                 </div>
             </div>
 
-            <div className="col-md-1">
+            <div className="col-md-1 pt-1">
                 <button id="fav-button" onClick={toggleFavButton} className="btn btn-outline-light shadow-sm w-100 py-2">
                     <span className="fa fa-heart textRed"/>
                 </button>

@@ -11,9 +11,10 @@ class Header extends Component{
         const userData = JSON.parse(localStorage.getItem("userData"));
         this.state = {
             id : userData.id,
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            isUserAdmin: userData.admin
+            firstName: userData.userDetails.firstName,
+            lastName: userData.userDetails.lastName,
+            isUserAdmin: userData.admin,
+            imgUrl : userData.userDetails.profilePicture
         }
     }
 
@@ -87,13 +88,14 @@ class Header extends Component{
                                 <span className="nav-link dropdown-toggle text-white" id="navbarDropdownBlog"
                                       data-toggle="dropdown"
                                       aria-haspopup="true" aria-expanded="false">
-                                    <img src={user}
+                                    <img src={this.state.imgUrl == null ? user : `data:image/jpeg;base64,${[this.state.imgUrl]}`}
                                          width="40px" alt="User-profile" height="40px"
                                          className="rounded-circle mx-2 text-white"/>
                                     <span className="spanButton">{this.getFullName()}</span>
                                 </span>
                                     <div className="dropdown-menu dropdown-menu-right bg-customcolor"
                                          aria-labelledby="navbarDropdownBlog">
+                                        <Link to={`/users/${this.state.id}`} className="dropdown-item text-white"><i className="fa fa-user mr-1 timeText"/> My account</Link>
                                         <span className="dropdown-item text-white spanButton" onClick={this.onLogoutHandler}><i
                                             className="fa fa-sign-out mr-1 timeText" />Log out</span>
                                     </div>

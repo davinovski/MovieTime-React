@@ -10,7 +10,7 @@ class MainContainer extends Component{
     constructor(props){
         super(props);
         this.state={
-            CardView: true,
+            CardView: false,
             QueryParams: new URLSearchParams(),
             pageNumber:1,
             pageSize:12,
@@ -30,7 +30,6 @@ class MainContainer extends Component{
 
     loadMovies = () =>{
         MovieService.fetchMovies(this.state.pageNumber, this.state.pageSize, this.state.QueryParams).then(resp=>{
-            console.log(resp.data);
             this.setState(resp.data);
         })
     };
@@ -81,7 +80,7 @@ class MainContainer extends Component{
                 );
             } else {
                 return (
-                    <div className="col-12" style={{minHeight: "500px"}}>
+                    <div className="col-12" style={{minHeight: "500px", 'paddingLeft' : '5px'}}>
                         {this.state.content.map(movie => <ListItem toggleStar={this.toggleFavouriteCourse} favourites={this.state.favouriteIds} key={movie.id} movie={movie}/>)}
                     </div>
                 );

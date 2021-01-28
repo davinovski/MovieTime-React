@@ -6,6 +6,7 @@ import Modal from "../UI/Modal/Modal";
 import ModalDelete from "../UI/ModalDelete/ModalDelete";
 import DeleteElement from "../UI/DeleteElement/DeleteElement";
 import CastAdd from "./CastAdd/CastAdd";
+import '../Movies/Movies/Movies.css'
 
 class Cast extends Component {
 
@@ -202,7 +203,7 @@ class Cast extends Component {
     render() {
         return (
             <div className="container my-4">
-                <h1 className="text-white">Manage cast</h1>
+                <h1 className={"text-white " + (this.state.delCast ? 'rowToFade' : '')}>Manage cast</h1>
                 <hr/>
 
                 <Modal show={this.state.addingCast}>
@@ -226,7 +227,7 @@ class Cast extends Component {
                                    deletedId={this.state.deleteCastId}/>
 
                 </ModalDelete>
-
+                <div className={(this.state.delCast ? ' rowToFade' : '')}>
                 <div className="row">
                     <div className="col-3 mb-3">
                         <button onClick={this.addCastHandler} className="btn btn-outline-primary btn-lg">
@@ -235,6 +236,7 @@ class Cast extends Component {
                     </div>
                 </div>
                 {this.mainContent()}
+            </div>
             </div>
         );
     }

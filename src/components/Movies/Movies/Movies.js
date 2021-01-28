@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import {Link} from "react-router-dom";
 import ModalDelete from "../../UI/ModalDelete/ModalDelete";
 import DeleteElement from "../../UI/DeleteElement/DeleteElement"
+import "./Movies.css";
 
 class AdminMovies extends Component {
 
@@ -34,7 +35,6 @@ class AdminMovies extends Component {
 
     loadMovies = () => {
         MoviesService.fetchMovies(this.state.pageNumber, this.state.pageSize, this.state.QueryParams).then(resp => {
-            console.log(resp.data);
             this.setState(resp.data);
         });
     };
@@ -123,7 +123,9 @@ class AdminMovies extends Component {
 
                     <div style={{minHeight: 300}}>
                         <MoviesTable data={this.state.content}
-                                      deleteMovieHandle={this.deleteMovie}/>
+                                      deleteMovieHandle={this.deleteMovie}
+                                     blurred={this.state.delMovie}
+                            />
                     </div>
 
                     {this.pagination()}
@@ -163,8 +165,8 @@ class AdminMovies extends Component {
 
     render() {
         return (
-            <div className="container my-4">
-                <h1 className="text-white">Manage movies</h1>
+            <div className="container my-4 ">
+                <h1 className={"text-white "  + (this.state.delMovie ? 'rowToFade' : '')}>Manage movies</h1>
                 <hr/>
                 <ModalDelete show={this.state.delMovie}>
 
@@ -179,7 +181,7 @@ class AdminMovies extends Component {
                                    deletedId={this.state.deletedMovieId}/>
 
                 </ModalDelete>
-
+            <div className={(this.state.delMovie ? ' rowToFade' : '')}>
                 <div className="row">
                     <div className="col-3">
                         <Link to='/admin/movies/add' className="btn btn-outline-primary btn-lg">
@@ -192,6 +194,7 @@ class AdminMovies extends Component {
                 </div>
 
                 {this.mainContent()}
+            </div>
             </div>
         );
     }

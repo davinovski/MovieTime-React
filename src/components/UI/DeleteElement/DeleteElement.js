@@ -22,12 +22,12 @@ class DeleteElement extends Component {
             <div className="card bg-dark text-white">
                 <div className="card-header text-center bg-dark text-danger deleteHeader text-uppercase" style={{
                 }}>
-                    <b className="textRed">Confirm</b>
+                    <b className="text-white">Confirm</b>
                 </div>
-                <div className="card-body text-center">
+                <div className="card-body text-center bg-customcolor">
                     <p className="card-text">Are you sure you want to delete <b>{this.props.title}</b>?</p>
                 </div>
-                <div className="card-footer bg-dark text-white" style={{backgroundColor: "white"}}>
+                <div className="card-footer text-white bg-customcolor">
                     <div className="row">
                         <div className="col">
 

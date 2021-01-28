@@ -1,0 +1,53 @@
+.UserInfo .nav-tabs li a,
+.UserInfo .nav-tabs li a:active,
+.UserInfo .nav-tabs li a:focus {
+    color:darkslategray;
+    outline:2px !important;
+    -webkit-appearance:none;
+    text-decoration:none; }
+
+.UserInfo .emailInput{
+    cursor:no-drop;
+}
+.UserInfo .tableFavourites{
+    height: 330px;
+}
+
+.containerForm {
+    position: relative;
+    min-height: 79vh;
+}
+#myTabContent{
+    height: 400px;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+    color: #495057;
+    background-color: #141414 !important;
+    border-color: #141414 #141414 #141414 !important;
+}
+
+.nav-tabs .dropdown-menu {
+    margin-top: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #141414 !important;
+}
+
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+    border-color: #141414 #141414 #141414 !important;
+}
+
+.blackColorBorder{
+    border: 2px solid #141414 !important;
+}

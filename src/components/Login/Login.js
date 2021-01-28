@@ -3,7 +3,7 @@ import "../SignUp/SignUp.css"
 import logo from '../../images/logo.png';
 import {withRouter, Link} from "react-router-dom";
 import UsersService from "../../axios/UserService";
-
+import Loader from "react-loader-spinner";
 
 class Login extends Component {
 
@@ -46,11 +46,13 @@ class Login extends Component {
             username: e.target.username.value,
             password: e.target.password.value
         };
-        console.log(user);
+        this.setState({showSpinner: true});
         UsersService.loginUser(user).then(response => {
             this.setLocalStorage(user.username, response.headers.authorization);
+            this.setState({showSpinner: false});
         }).catch(error => {
             this.setState({
+                showSpinner: false,
             showAlertWrongCredentials : true,
             wrongCredentialsMessage: "Invalid credentials"})});
     };
@@ -66,6 +68,30 @@ class Login extends Component {
 
     redirectByRole = () => {
         this.props.login();
+    };
+
+    spinner = () => {
+        if (this.state.showSpinner) {
+            return (
+                <div className="text-center">
+                    <Loader
+                        type="ThreeDots"
+                        color="#D12118"
+                        height={100}
+                        width={100}
+                    />
+                </div>
+            );
+        }
+        return (
+            <div>
+                <button className="btn btn-lg btn-block btn-outline-custom-color text-uppercase" type="submit"
+                        id="loginButton">Log in
+                </button>
+                <Link to={"/register"}
+                      className="btn btn-lg btn-outline-light btn-block text-uppercase signUpButton">Register
+                </Link>
+            </div>)
     };
 
 
@@ -98,14 +124,7 @@ class Login extends Component {
                                                    placeholder="Password" name="password"/>
                                             <label htmlFor="inputPassword">Password</label>
                                         </div>
-                                        <div>
-                                            <button className="btn btn-lg btn-block btn-outline-custom-color text-uppercase" type="submit"
-                                                    id="loginButton">Log in
-                                            </button>
-                                            <Link to={"/register"}
-                                                  className="btn btn-lg btn-outline-light btn-block text-uppercase signUpButton">Register
-                                            </Link>
-                                        </div>
+                                        {this.spinner()}
                                     </form>
                                 </div>
                             </div>

@@ -2,6 +2,18 @@
     padding: 1.25rem;
 }
 
+.btn-custom-color{
+    background-color: #D12118 !important;
+}
+
+.btn-custom-color i{
+    color:white;
+}
+.borderPill{
+    border: 3px solid white;
+}
+
+
 .movieDetails .card{
     border-radius: .25rem;
 }
@@ -18,6 +30,10 @@
     list-style: none;
     padding: 5px 0 10px;
     position: relative;
+}
+
+.buttonAction:hover i{
+    color: #42ba96;
 }
 
 .movieDetails .timeline:before {

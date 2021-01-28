@@ -5,6 +5,8 @@ import MovieInfo from "./MovieInfo/MovieInfo"
 import "./MovieDetails.css"
 import MovieStaff from "./MovieCast/MovieCast";
 import CommentService from "../../../axios/CommentService";
+import UserService from "../../../axios/UserService";
+import ReactStars from "react-rating-stars-component";
 
 class MovieDetails extends Component {
     constructor(props){
@@ -13,11 +15,14 @@ class MovieDetails extends Component {
             movie: {
             },
             param: this.props.match.params,
+            comments:[],
             comment:{
                 title:"",
                 content:"",
                 stars: 0.0
             },
+            watched: false,
+            favorites: []
         }
     }
     componentDidMount() {
@@ -25,11 +30,50 @@ class MovieDetails extends Component {
     }
 
     loadMovie = () =>{
-        MovieService.getMovie(this.state.param.name).then((data) => {
+
+        MovieService.getMovie(this.state.param.name).then(data => {
             this.setState({
-                movie:data.data,
-                videoUrl:data.data.videoUrl
+                movie: data.data,
+                videoUrl:data.data.videoUrl,
+                favorites: JSON.parse(localStorage.getItem("userData")).favoritesIds
             });
+        });
+        this.loadComments(this.state.param.name);
+    };
+
+    loadComments = (params) => {
+        MovieService.fetchComments(params).then(data => {
+            this.setState(prevState => ({
+                ...prevState,
+                comments: data.data
+            }));
+        });
+        this.loadWatchedMovies();
+    };
+
+    loadWatchedMovies = () => {
+        UserService.isWatched(this.state.param.name).then(resp => {
+            this.setState({
+                watched: resp.data
+            })
+        });
+    }
+
+    addToFavourites = (movieId) => {
+        MovieService.toggleFavourites(movieId).then(resp => {
+            localStorage.removeItem("userData");
+            localStorage.setItem("userData", JSON.stringify(resp.data));
+            this.setState({
+                favorites: JSON.parse(localStorage.getItem("userData")).favoritesIds
+            })
+        });
+    };
+
+    addToWatched = (movieId) => {
+        UserService.addToWatched(movieId).then(resp => {
+            this.setState({
+                watched: resp.data
+            })
         });
     };
 
@@ -38,7 +82,6 @@ class MovieDetails extends Component {
             <span>
                 {Array(Math.floor(total)).fill(<i className="fa fa-star text-warning"/>)}
                 {(total) - Math.floor(total)===0 ? ('') : (<i className="fa fa-star-half-empty text-warning fa-xs"/>)}
-                {Array(Math.floor(10-Math.ceil(total))).fill(<i className="fa fa-star-o text-warning"/>)}
             </span>
         )
     };
@@ -61,7 +104,6 @@ class MovieDetails extends Component {
         e.preventDefault();
         document.getElementById("textareaComment").value="";
         document.getElementById("inputTitle").value="";
-        document.getElementById("inputStars").value=0.0;
         CommentService.postComment(this.state.movie.id,this.state.comment.title,this.state.comment.content, this.state.comment.stars).then(()=>this.loadMovie());
     };
 
@@ -79,8 +121,8 @@ class MovieDetails extends Component {
         };
 
     getComments = () =>{
-        if(this.state.movie.comments!==undefined){
-            return this.state.movie.comments.map(comment=>{
+        if(this.state.comments!==undefined){
+            return this.state.comments.map(comment=>{
                 return(
                     <div className="my-2 mx-2 shadow-sm bg-customcolor" key={comment.id}>
                         <div>
@@ -97,6 +139,16 @@ class MovieDetails extends Component {
             )
         }
     };
+
+    changeStars = (newRating) => {
+        this.setState(prevState => ({
+            ...prevState,
+            comment: {
+                ...prevState.comment,
+                stars: newRating
+            }
+        }))
+    }
 
     render() {
         return (
@@ -145,8 +197,14 @@ class MovieDetails extends Component {
                                                 <form onSubmit={(e)=>this.postComment(e)}>
                                                     <input type="text" className="form-control mb-2" name="title"
                                                            placeholder="Title" id="inputTitle" onChange={(e)=>this.changeComment(e)}/>
-                                                    <input type="number" max="10.0" min="1.0" placeholder="Rating (0.0-10.0)" name="stars" id="inputStars" className="w-25 form-control mb-2" step="0.1"
-                                                           onChange={(e)=>this.changeComment(e)}/>
+                                                    <ReactStars
+                                                        id="stars"
+                                                        count={10}
+                                                        size={24}
+                                                        value={0}
+                                                        activeColor="#ffc107"
+                                                        onChange = {this.changeStars}
+                                                    />
                                                     <textarea className="form-control textValue mt-2 textAreaComment"
                                                               placeholder="Write a comment" rows="2" name="content"
                                                               id="textareaComment" onChange={(e)=>this.changeComment(e)}/>
@@ -164,8 +222,14 @@ class MovieDetails extends Component {
                         </div>
                     </div>
                         <MovieStaff directors={this.state.movie.directors}
-                                     stars={this.state.movie.stars}
-                                     writers={this.state.movie.writers}/>
+                                    stars={this.state.movie.stars}
+                                    writers={this.state.movie.writers}
+                                    movieid={this.state.movie.id}
+                                    addToFav={this.addToFavourites}
+                                    addToWatched={this.addToWatched}
+                                    favorite={this.state.favorites.some(m => m === this.state.movie.id)}
+                                    watched={this.state.watched}
+                                    />
                 </div>
             </div>
         );
